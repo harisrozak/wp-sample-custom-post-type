@@ -3,6 +3,7 @@
 
 ##Description
 Completed custom post type sample!, including:
+
 1. Post type
 2. Category
 3. Meta box
