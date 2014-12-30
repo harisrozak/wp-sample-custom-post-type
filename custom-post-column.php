@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Modify which columns display in the admin views 
+ * Modify which columns display in the admin views
+ * --> manage_{post type}_posts_columns
  */
 add_filter('manage_cpt_post_type_posts_columns', 'cpt_post_type_posts_columns');
 function cpt_post_type_posts_columns($posts_columns) 
@@ -11,7 +12,7 @@ function cpt_post_type_posts_columns($posts_columns)
 	$tmp['cb'] = '<input type="checkbox" />';
 	$tmp['cpt_thumbnail'] = '';
 	$tmp['title'] = "Title";
-	$tmp['cpt_meta_text'] = 'Custom Meta Text';
+	$tmp['cpt_input_text'] = 'Input Text';
 	$tmp['cpt_taxonomy'] = 'Sample Taxonomy';
 	$tmp['date'] = 'Date';
 
@@ -20,10 +21,11 @@ function cpt_post_type_posts_columns($posts_columns)
 
 
 /**
- * Custom column output when admin is viewing the post type.
+ * Custom column output when admin is viewing the post type
+ * --> manage_{post type}_posts_custom_column
  */
-add_action('manage_posts_custom_column', 'cpt_custom_column');
-function cpt_custom_column($column_name) 
+add_action('manage_cpt_post_type_posts_custom_column', 'cpt_post_type_posts_custom_column');
+function cpt_post_type_posts_custom_column($column_name) 
 {
 	global $post;
 
@@ -33,32 +35,60 @@ function cpt_custom_column($column_name)
 
 		$thumb_img = str_replace('<img', '<img style="width:60px"', $thumb_img);
 
-		if(! empty($thumb_img))
-		{
+		if(! empty($thumb_img)) {
 			echo "<a href='" . get_edit_post_link($post -> ID) . "'>" . $thumb_img . "</a>";
 		}
-		else
-		{
+		else {
 			echo "<img src='" . plugin_dir_url( __FILE__ ) . "assets/no-image.png' style='width:60px' />";
 		}
 	}
-
-	if ($column_name == 'cpt_meta_text') 
+	else if ($column_name == 'cpt_input_text') 
 	{
-		$postmeta =  get_post_meta($post -> ID, 'cpt_meta_box',true);
+		$cpt_input_text =  get_post_meta($post -> ID, 'cpt_input_text',true);
 	
-		if(isset($postmeta['input_text']) && $postmeta['input_text'] != '')
-		{
-			echo $postmeta['input_text'];
+		if($cpt_input_text != '') {
+			echo $cpt_input_text;
 		}
-		else
-		{
+		else {
 			echo "<i>empty</i>";
 		}
 	}
-
-	if ($column_name == 'cpt_taxonomy') 
+	else if ($column_name == 'cpt_taxonomy') 
 	{
 		echo get_the_term_list($post -> ID, 'cpt_taxonomy', '', ', ', '');
 	}
+}
+
+
+/**
+ * Sorting custom column 
+ * --> manage_edit-{post type}_sortable_columns
+ */
+add_filter( 'manage_edit-cpt_post_type_sortable_columns', 'my_sortable_cake_column' );
+function my_sortable_cake_column( $columns ) 
+{
+    $columns['cpt_input_text'] = 'cpt_input_text';
+ 
+    //To make a column 'un-sortable' remove it from the array
+    //unset($columns['date']);
+ 
+    return $columns;
+}
+
+
+/**
+ * Enable custom post meta filter sorting
+ */
+add_filter( 'request', 'cpt_meta_text_column_orderby' );
+function cpt_meta_text_column_orderby( $vars ) 
+{
+	if ( isset( $vars['orderby'] ) && 'cpt_input_text' == $vars['orderby'] ) 
+	{
+		$vars = array_merge( $vars, array(
+			'meta_key' => 'cpt_input_text',
+			'orderby' => 'meta_value'
+		) );
+	}
+
+	return $vars;
 }

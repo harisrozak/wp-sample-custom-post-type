@@ -37,17 +37,14 @@ function cpt_save_postdata($post_id)
         }   
     }
     
-    $post_meta = $_POST['cpt_meta_field'];
-
-    //trim data
-    foreach ( $post_meta as $key => $value) 
-    {
-        $postmeta[$key]= trim($value);
-        $postmeta[$key]= esc_attr($value);
-    }
-
     // update_post_meta($post_id,'cpt_meta_box',$post_meta);
-    update_post_meta($post_id,'cpt_meta_box',$post_meta);
+    update_post_meta($post_id,'cpt_input_text',$_POST['cpt_input_text']);
+    update_post_meta($post_id,'cpt_input_select',$_POST['cpt_input_select']);
+    update_post_meta($post_id,'cpt_input_checkbox_1',$_POST['cpt_input_checkbox_1']);
+    update_post_meta($post_id,'cpt_input_checkbox_2',$_POST['cpt_input_checkbox_2']);
+    update_post_meta($post_id,'cpt_input_checkbox_3',$_POST['cpt_input_checkbox_3']);
+    update_post_meta($post_id,'cpt_input_radio',$_POST['cpt_input_radio']);
+    update_post_meta($post_id,'cpt_input_textarea',$_POST['cpt_input_textarea']);
 }
 
 /** 
@@ -58,28 +55,13 @@ function cpt_meta_box_callback( $post )
     // Use nonce for verification
     wp_nonce_field( plugin_basename( __FILE__ ), 'cpt_noncename' );
 
-    $postmeta = get_post_meta($post->ID, 'cpt_meta_box',true);
-
-    if (!isset($postmeta["input_text"])) 
-        $postmeta["input_text"] = 'input text';
-
-    if (!isset($postmeta["input_select"])) 
-        $postmeta["input_select"] = 'option 1';
-
-    if (!isset($postmeta["input_checkbox_1"])) 
-        $postmeta["input_checkbox_1"] = '';
-
-    if (!isset($postmeta["input_checkbox_2"])) 
-        $postmeta["input_checkbox_2"] = '';
-
-    if (!isset($postmeta["input_checkbox_3"])) 
-        $postmeta["input_checkbox_3"] = '';
-
-    if (!isset($postmeta["input_radio"])) 
-        $postmeta["input_radio"] = 'radio 1';
-
-    if (!isset($postmeta["input_textarea"])) 
-        $postmeta["input_textarea"] = 'input textarea';
+    $cpt_input_text = get_post_meta($post->ID, 'cpt_input_text',true);
+    $cpt_input_select = get_post_meta($post->ID, 'cpt_input_select',true);
+    $cpt_input_checkbox_1 = get_post_meta($post->ID, 'cpt_input_checkbox_1',true);
+    $cpt_input_checkbox_2 = get_post_meta($post->ID, 'cpt_input_checkbox_2',true);
+    $cpt_input_checkbox_3 = get_post_meta($post->ID, 'cpt_input_checkbox_3',true);
+    $cpt_input_radio = get_post_meta($post->ID, 'cpt_input_radio',true);
+    $cpt_input_textarea = get_post_meta($post->ID, 'cpt_input_textarea',true);
 
     ?>
 
@@ -96,7 +78,7 @@ function cpt_meta_box_callback( $post )
     <table class="form-table">
         <tr>
             <th>Text</th>
-            <td><input type="text" name="cpt_meta_field[input_text]" value="<?php echo $postmeta['input_text'] ?>"></td>
+            <td><input type="text" name="cpt_input_text" value="<?php echo $cpt_input_text ?>"></td>
         </tr>
         <tr>
             <th>Select</th>
@@ -117,7 +99,7 @@ function cpt_meta_box_callback( $post )
                         )
                     );
 
-                    form_lib_print_select($arr_data,"cpt_meta_field[input_select]",$postmeta['input_select']);
+                    form_lib_print_select($arr_data,"cpt_input_select",$cpt_input_select);
                 ?>
             </td>
         </tr>
@@ -127,22 +109,22 @@ function cpt_meta_box_callback( $post )
                 <?php 
                     $arr_data = array(                                  
                         '0' => array(
-                            'name' =>   'cpt_meta_field[input_checkbox_1]',
+                            'name' =>   'cpt_input_checkbox_1',
                             'value' =>  'checkbox 1',
                             'label' =>  '1st checkbox',
-                            'saved_value' => $postmeta['input_checkbox_1']
+                            'saved_value' => $cpt_input_checkbox_1
                         ),
                         '1' => array(
-                            'name' =>   'cpt_meta_field[input_checkbox_2]',
+                            'name' =>   'cpt_input_checkbox_2',
                             'value' =>  'checkbox 2',
                             'label' =>  '2nd checkbox',
-                            'saved_value' => $postmeta['input_checkbox_2']
+                            'saved_value' => $cpt_input_checkbox_2
                         ),
                         '2' => array(
-                            'name' =>   'cpt_meta_field[input_checkbox_3]',
+                            'name' =>   'cpt_input_checkbox_3',
                             'value' =>  'checkbox 3',
                             'label' =>  '3rd checkbox',
-                            'saved_value' => $postmeta['input_checkbox_3']
+                            'saved_value' => $cpt_input_checkbox_3
                         )
                     );
 
@@ -169,13 +151,13 @@ function cpt_meta_box_callback( $post )
                         )
                     );
 
-                    form_lib_print_radio($arr_data,"cpt_meta_field[input_radio]",$postmeta['input_radio']);
+                    form_lib_print_radio($arr_data,"cpt_input_radio",$cpt_input_radio);
                 ?>
             </td>
         </tr>
         <tr>
             <th>Textarea</th>
-            <td><textarea name="cpt_meta_field[input_textarea]"><?php echo $postmeta['input_textarea'] ?></textarea></td>
+            <td><textarea name="cpt_input_textarea"><?php echo $cpt_input_textarea ?></textarea></td>
         </tr>
     </table>
 <?php 

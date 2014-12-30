@@ -8,4 +8,5 @@ Completed custom post type sample!, including:
 2. Category
 3. Meta box
 4. Post column
-5. Taxonomy filter
+5. Post column sorting
+6. Taxonomy filter
