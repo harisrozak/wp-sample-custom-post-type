@@ -64,8 +64,8 @@ function cpt_post_type_posts_custom_column($column_name)
  * Sorting custom column 
  * --> manage_edit-{post type}_sortable_columns
  */
-add_filter( 'manage_edit-cpt_post_type_sortable_columns', 'my_sortable_cake_column' );
-function my_sortable_cake_column( $columns ) 
+add_filter( 'manage_edit-cpt_post_type_sortable_columns', 'cpt_post_type_sortable_columns' );
+function cpt_post_type_sortable_columns( $columns ) 
 {
     $columns['cpt_input_text'] = 'cpt_input_text';
  
@@ -79,8 +79,8 @@ function my_sortable_cake_column( $columns )
 /**
  * Enable custom post meta filter sorting
  */
-add_filter( 'request', 'cpt_meta_text_column_orderby' );
-function cpt_meta_text_column_orderby( $vars ) 
+add_filter( 'request', 'filter_column_orderby' );
+function filter_column_orderby( $vars ) 
 {
 	if ( isset( $vars['orderby'] ) && 'cpt_input_text' == $vars['orderby'] ) 
 	{
