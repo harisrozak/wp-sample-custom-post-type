@@ -46,6 +46,8 @@ function cpt_register_post_type()
             'has_archive' => true,
             'exclude_from_search' => true,
             'publicly_queryable' => false,
+            'menu_position' => 5, // places menu item directly below Posts
+            'menu_icon' => 'dashicons-format-image' // image icon
             'taxonomies' => array( 'cpt_taxonomy' )
         )
     );
@@ -73,6 +75,22 @@ function cpt_register_post_type()
  		'query_var' => true,
  		'rewrite' => array( 'slug' => 'cpt_taxonomy' ),
  		));
+}
+
+/**
+ * Menu icon
+ * More icons: http://melchoyce.github.io/dashicons/
+ * Click "Copy CSS" after select image
+ * After that, fill 'menu_icon' with icon class, for example 'dashicons-format-image'
+ */
+add_action( 'admin_head', 'add_menu_icons_styles' );
+function add_menu_icons_styles()
+{
+    echo '<style>';
+    echo '#adminmenu .menu-icon-events div.wp-menu-image:before {';
+    echo 'content: "\f128";'; // replace this with copyed css
+    echo '}';
+    echo '</style>';
 }
 
 /**
