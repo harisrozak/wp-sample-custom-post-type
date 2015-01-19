@@ -47,7 +47,7 @@ function cpt_register_post_type()
             'exclude_from_search' => true,
             'publicly_queryable' => false,
             'menu_position' => 5, // places menu item directly below Posts
-            'menu_icon' => 'dashicons-format-image' // image icon
+            'menu_icon' => 'dashicons-format-image', // image icon
             'taxonomies' => array( 'cpt_taxonomy' )
         )
     );
