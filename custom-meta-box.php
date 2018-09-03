@@ -66,11 +66,29 @@ function cpt_meta_box_callback( $post )
     ?>
 
     <style type="text/css">
-        input[type='text'], select, textarea {
-            width: 300px;
+        #cpt_meta_box .inside {
+            margin: 0;
+            padding: 0;
         }
-
-        textarea {
+        #cpt_meta_box .inside > table {
+                margin-top: 0;
+        }
+        #cpt_meta_box .inside > table tr + tr {
+            border-top: #EEEEEE solid 1px;
+        }
+        #cpt_meta_box .inside > table th {
+            padding: 20px 10px 20px 15px;
+            background: #F9F9F9;
+            border-right: #EEEEEE solid 1px;
+            width: 175px;
+            font-weight: normal;
+        }
+        #cpt_meta_box input[type='text'], 
+        #cpt_meta_box select, 
+        #cpt_meta_box textarea {
+            width: 100%;
+        }
+        #cpt_meta_box textarea {
             height: 100px;
         }
     </style>
