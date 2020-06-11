@@ -1,7 +1,5 @@
-#Sample WP Custom Post Type
-*Learning WordPress code by installing a plugin*
+# Sample WP Custom Post Type
 
-##Description
 Completed custom post type sample!, including:
 
 1. Post type
